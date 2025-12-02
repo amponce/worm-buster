@@ -1,0 +1,219 @@
+{
+  "critical": [
+    {
+      "type": "MALICIOUS_ARTIFACT",
+      "severity": "CRITICAL",
+      "artifact": "environment.json",
+      "path": "/home/haxor/.cache/pnpm/metadata/registry.npmjs.org/@jest/environment.json"
+    },
+    {
+      "type": "MALICIOUS_ARTIFACT",
+      "severity": "CRITICAL",
+      "artifact": "environment.json",
+      "path": "/home/haxor/.cache/pnpm/metadata-v1.3/registry.npmjs.org/@jest/environment.json"
+    },
+    {
+      "type": "MALICIOUS_ARTIFACT",
+      "severity": "CRITICAL",
+      "artifact": "contents.json",
+      "path": "/home/haxor/.cache/pnpm/metadata-v1.3/registry.npmjs.org/@npmcli/installed-package-contents.json"
+    },
+    {
+      "type": "MALICIOUS_ARTIFACT",
+      "severity": "CRITICAL",
+      "artifact": "environment.json",
+      "path": "/home/haxor/.cache/pnpm/metadata-v1.3/registry.npmjs.org/environment.json"
+    },
+    {
+      "type": "MALICIOUS_ARTIFACT",
+      "severity": "CRITICAL",
+      "artifact": "environment.json",
+      "path": "/home/haxor/.cache/pnpm/metadata-v1.3/registry.npmjs.org/yeoman-environment.json"
+    },
+    {
+      "type": "MALICIOUS_ARTIFACT",
+      "severity": "CRITICAL",
+      "artifact": "contents.json",
+      "path": "/home/haxor/.local/lib/python3.10/site-packages/spacy/tests/registry_contents.json"
+    },
+    {
+      "type": "MALICIOUS_ARTIFACT",
+      "severity": "CRITICAL",
+      "artifact": "environment.json",
+      "path": "/home/haxor/.windsurf-server/extensions/ms-python.python-2025.4.0-universal/schemas/conda-environment.json"
+    },
+    {
+      "type": "MALICIOUS_ARTIFACT",
+      "severity": "CRITICAL",
+      "artifact": "environment.json",
+      "path": "/home/haxor/workspaces/vets-api/modules/vba_documents/postman_tests/Sandbox Environment.postman_environment.json"
+    },
+    {
+      "type": "MALICIOUS_ARTIFACT",
+      "severity": "CRITICAL",
+      "artifact": "environment.json",
+      "path": "/home/haxor/workspaces/vets-api/modules/vba_documents/postman_tests/localhost Environment.postman_environment.json"
+    },
+    {
+      "type": "MALICIOUS_ARTIFACT",
+      "severity": "CRITICAL",
+      "artifact": "environment.json",
+      "path": "/home/haxor/workspaces/vets-api/modules/vba_documents/postman_tests/Sandbox Environment.postman_environment.json"
+    },
+    {
+      "type": "MALICIOUS_ARTIFACT",
+      "severity": "CRITICAL",
+      "artifact": "environment.json",
+      "path": "/home/haxor/workspaces/vets-api/modules/vba_documents/postman_tests/localhost Environment.postman_environment.json"
+    }
+  ],
+  "warning": [
+    {
+      "type": "SUSPICIOUS_PACKAGE",
+      "severity": "WARNING",
+      "package": "posthog-js",
+      "version": "1.176.2",
+      "declaredVersion": "1.176.2",
+      "infectedVersions": [
+        "1.297.3"
+      ],
+      "depType": "dependencies",
+      "file": "/home/haxor/code/agency-starter/apps/web/package.json"
+    },
+    {
+      "type": "SUSPICIOUS_PACKAGE",
+      "severity": "WARNING",
+      "package": "posthog-js",
+      "version": "1.249.0",
+      "declaredVersion": "1.249.0",
+      "infectedVersions": [
+        "1.297.3"
+      ],
+      "depType": "dependencies",
+      "file": "/home/haxor/code/inbox-zero-local/apps/web/package.json"
+    },
+    {
+      "type": "SUSPICIOUS_PACKAGE",
+      "severity": "WARNING",
+      "package": "posthog-node",
+      "version": "4.18.0",
+      "declaredVersion": "4.18.0",
+      "infectedVersions": [
+        "4.18.1",
+        "5.13.3"
+      ],
+      "depType": "dependencies",
+      "file": "/home/haxor/code/inbox-zero-local/apps/web/package.json"
+    },
+    {
+      "type": "SUSPICIOUS_PACKAGE",
+      "severity": "WARNING",
+      "package": "posthog-js",
+      "version": "1.176.2",
+      "declaredVersion": "1.176.2",
+      "infectedVersions": [
+        "1.297.3"
+      ],
+      "depType": "dependencies",
+      "file": "/home/haxor/code/agency-starter/apps/web/package.json"
+    },
+    {
+      "type": "SUSPICIOUS_PACKAGE",
+      "severity": "WARNING",
+      "package": "posthog-js",
+      "version": "1.249.0",
+      "declaredVersion": "1.249.0",
+      "infectedVersions": [
+        "1.297.3"
+      ],
+      "depType": "dependencies",
+      "file": "/home/haxor/code/inbox-zero-local/apps/web/package.json"
+    },
+    {
+      "type": "SUSPICIOUS_PACKAGE",
+      "severity": "WARNING",
+      "package": "posthog-node",
+      "version": "4.18.0",
+      "declaredVersion": "4.18.0",
+      "infectedVersions": [
+        "4.18.1",
+        "5.13.3"
+      ],
+      "depType": "dependencies",
+      "file": "/home/haxor/code/inbox-zero-local/apps/web/package.json"
+    },
+    {
+      "type": "SUSPICIOUS_PACKAGE",
+      "severity": "WARNING",
+      "package": "posthog-js",
+      "version": "1.161.0",
+      "declaredVersion": "1.161.0",
+      "infectedVersions": [
+        "1.297.3"
+      ],
+      "depType": "dependencies",
+      "file": "/home/haxor/projects/Follow/package.json"
+    },
+    {
+      "type": "SUSPICIOUS_PACKAGE",
+      "severity": "WARNING",
+      "package": "posthog-node",
+      "version": "4.2.0",
+      "declaredVersion": "4.2.0",
+      "infectedVersions": [
+        "4.18.1",
+        "5.13.3"
+      ],
+      "depType": "dependencies",
+      "file": "/home/haxor/projects/Follow/package.json"
+    },
+    {
+      "type": "SUSPICIOUS_SCRIPT",
+      "severity": "WARNING",
+      "script": "postinstall",
+      "content": "node ./script/check-node-version.js",
+      "file": "/home/haxor/workspaces/vets-json-schema/package.json"
+    },
+    {
+      "type": "SUSPICIOUS_SCRIPT",
+      "severity": "WARNING",
+      "script": "postinstall",
+      "content": "husky install && npm rebuild node-sass && node ./script/check-node-version.js",
+      "file": "/home/haxor/workspaces/vets-website/package.json"
+    },
+    {
+      "type": "SUSPICIOUS_SCRIPT",
+      "severity": "WARNING",
+      "script": "postinstall",
+      "content": "node ./script/check-node-version.js",
+      "file": "/home/haxor/workspaces/vets-json-schema/package.json"
+    },
+    {
+      "type": "SUSPICIOUS_SCRIPT",
+      "severity": "WARNING",
+      "script": "postinstall",
+      "content": "husky install && npm rebuild node-sass && node ./script/check-node-version.js",
+      "file": "/home/haxor/workspaces/vets-website/package.json"
+    }
+  ],
+  "info": [
+    {
+      "type": "CREDENTIAL_FILE_EXISTS",
+      "severity": "INFO",
+      "file": "/home/haxor/.config/gcloud/credentials.db",
+      "note": "Verify this file has not been tampered with"
+    },
+    {
+      "type": "CREDENTIAL_FILE_EXISTS",
+      "severity": "INFO",
+      "file": "/home/haxor/.npmrc",
+      "note": "Verify this file has not been tampered with"
+    },
+    {
+      "type": "CREDENTIAL_FILE_EXISTS",
+      "severity": "INFO",
+      "file": "/home/haxor/.git-credentials",
+      "note": "Verify this file has not been tampered with"
+    }
+  ]
+}
