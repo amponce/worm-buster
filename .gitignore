@@ -28,8 +28,9 @@ jspm_packages/
 # Optional eslint cache
 .eslintcache
 
-# Output files
+# Output files (contain local paths)
 worm-buster-report.json
+scan-report.json
 *.tmp
 
 # OS files

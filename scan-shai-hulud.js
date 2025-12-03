@@ -573,11 +573,28 @@ async function scan(directories) {
   return allFindings;
 }
 
-// Run the scanner
-const directories = [
-  '/home/haxor/code',
-  '/home/haxor',
-  '/home/haxor/workspaces'
-];
+// Parse command line arguments
+const args = process.argv.slice(2);
+
+if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
+  console.log(`
+Shai-Hulud 2 Malware Scanner
+============================
+
+Usage: node scan-shai-hulud.js <directory> [directory2] [directory3] ...
+
+Examples:
+  node scan-shai-hulud.js .
+  node scan-shai-hulud.js ~/projects ~/code
+  node scan-shai-hulud.js /path/to/your/apps
+
+Options:
+  -h, --help    Show this help message
+`);
+  process.exit(0);
+}
+
+// Resolve paths to absolute
+const directories = args.map(dir => path.resolve(dir));
 
 scan(directories).catch(console.error);

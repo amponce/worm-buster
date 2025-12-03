@@ -1,139 +1,91 @@
-# Shai-Hulud 2 Malware Scan Report
+# Shai-Hulud 2 Malware Scan Report - Example
 
-**Scan Date:** 2025-12-02
-**Scanner:** worm-buster/scan-shai-hulud.js
-**Directories Scanned:**
-- /home/haxor/code (203 package.json files, 51 node_modules)
-- /home/haxor (261 package.json files, 66 node_modules)
-- /home/haxor/workspaces (33 package.json files, 13 node_modules)
+This is an example scan report. When you run the scanner, it will generate a `scan-report.json` with findings specific to your system.
 
 ---
 
-## EXECUTIVE SUMMARY
-
-**STATUS: CLEAN - No active Shai-Hulud 2 infection detected**
-
-Your systems do not appear to be compromised by the Shai-Hulud 2 malware campaign. All flagged items were verified as false positives or safe conditions.
-
----
-
-## DETAILED FINDINGS
+## What the Scanner Checks
 
 ### Malicious Indicators of Compromise (IoCs)
 
-| IoC Type | Status | Details |
-|----------|--------|---------|
-| Malicious `cloud.json` | NOT FOUND | Clean |
-| Malicious `truffleSecrets.json` | NOT FOUND | Clean |
-| Malicious `actionsSecrets.json` | NOT FOUND | Clean |
-| Malicious `.github/workflows/discussion.yaml` | NOT FOUND | Clean |
-| Malicious `formatter_*.yml` workflows | NOT FOUND | Clean |
-| Dropper `setup_bun.js` | NOT FOUND | Clean |
-| Payload `bun_environment.js` | NOT FOUND | Clean |
-| Suspicious Bun processes | NOT FOUND | Clean |
-
-### Bun Runtime Check
-
-| Item | Finding |
-|------|---------|
-| Bun Installed | Yes - v1.2.4 |
-| Install Date | March 10, 2025 |
-| Install Method | Legitimate (manual install) |
-| Shell History | Normal dev usage (`bun dev`, `bun install`) |
-| Status | **SAFE** - Legitimate developer installation |
+| IoC Type | Description |
+|----------|-------------|
+| `cloud.json` | Exfiltrated cloud credentials |
+| `truffleSecrets.json` | Stolen secrets |
+| `actionsSecrets.json` | GitHub Actions secrets |
+| `.github/workflows/discussion.yaml` | Backdoor workflow |
+| `formatter_*.yml` workflows | Randomly-named malicious workflows |
+| `setup_bun.js` | Dropper script |
+| `bun_environment.js` | Main payload (obfuscated) |
 
 ### Package Analysis
 
-#### Infected Packages Found: **NONE**
+The scanner checks:
+- All `package.json` files for infected dependencies
+- All `package-lock.json` files for locked infected versions
+- All `node_modules` directories for installed infected packages
 
-Your projects use packages that share names with infected packages, but you have **older, uninfected versions**:
+### Process Checks
 
-| Package | Your Version | Infected Version(s) | Status |
-|---------|--------------|---------------------|--------|
-| posthog-js | 1.161.0, 1.176.2, 1.249.0 | 1.297.3 | SAFE - older version |
-| posthog-node | 4.2.0, 4.18.0 | 4.18.1, 5.13.3 | SAFE - older version |
-
-### False Positives Dismissed
-
-The following files were initially flagged but are **legitimate**:
-
-1. **pnpm metadata cache files** (`@jest/environment.json`, etc.)
-   - Location: `~/.cache/pnpm/metadata/`
-   - Verdict: npm registry metadata, not malicious IoC
-
-2. **Postman environment files**
-   - Location: `vets-api/modules/vba_documents/postman_tests/`
-   - Verdict: Test configuration files
-
-3. **VS Code extension configs** (`conda-environment.json`)
-   - Location: `~/.windsurf-server/extensions/`
-   - Verdict: IDE extension configuration
-
-4. **Python test data** (`registry_contents.json`)
-   - Location: `~/.local/lib/python3.10/site-packages/spacy/tests/`
-   - Verdict: spaCy NLP library test fixture
-
-5. **postinstall scripts in vets-website**
-   - Content: Node.js version check script
-   - Verdict: Standard development tooling
+- Scans for suspicious Bun processes running in background
+- Checks if Bun runtime is installed and when
 
 ---
 
-## RECOMMENDATIONS
+## Understanding Results
 
-Since no infection was found, here are preventive measures:
+### CRITICAL Findings
+These require immediate action - infected packages or malicious files found.
 
-### Immediate Actions (Optional but Recommended)
+### WARNING Findings
+These need review - packages on the infected list but with different versions, or suspicious scripts.
 
-1. **Keep packages updated** - But verify new versions aren't compromised before upgrading
-2. **Review npm audit** regularly:
-   ```bash
-   npm audit
-   ```
-
-3. **Monitor your credentials** - Even without infection, good hygiene:
-   - Rotate GitHub PATs periodically
-   - Review AWS IAM access keys
-   - Check npm token permissions
-
-### Ongoing Protection
-
-1. **Use lockfiles** - Always commit `package-lock.json` to version control
-2. **Enable npm provenance** - Verify package origins
-3. **Review dependencies** before upgrading with:
-   ```bash
-   npm diff <package>@<old-version> <package>@<new-version>
-   ```
-
-4. **Monitor for typosquatting** - Watch for packages with similar names to popular ones
+### INFO Findings
+Informational - credential files that exist (normal, but verify integrity).
 
 ---
 
-## SCANNER LOCATION
+## False Positives
 
-The Shai-Hulud scanner is available at:
-```
-/home/haxor/code/worm-buster/scan-shai-hulud.js
-```
+The scanner may flag legitimate files that match IoC patterns:
 
-Run again anytime with:
-```bash
-node /home/haxor/code/worm-buster/scan-shai-hulud.js
-```
+- **pnpm/npm cache metadata** - Registry metadata files, not malicious
+- **Postman environment files** - Test configuration files
+- **IDE extension configs** - Editor settings
+- **Test fixtures** - Library test data
+
+These are typically in cache directories or deeply nested paths, not at project roots where actual IoCs would appear.
 
 ---
 
-## ABOUT SHAI-HULUD 2
+## Recommended Actions if Infected
+
+1. **DO NOT** run `npm install` in affected projects
+2. Remove infected packages from `package.json`
+3. Delete `node_modules` and `package-lock.json`
+4. Check `.github/workflows` for suspicious files
+5. **Rotate ALL credentials**:
+   - GitHub PATs and tokens
+   - AWS access keys
+   - GCP service accounts
+   - Azure credentials
+   - npm publish tokens
+6. Review recent commits for unauthorized changes
+7. Check for Bun runtime: `which bun`
+
+---
+
+## About Shai-Hulud 2
 
 The Shai-Hulud 2 campaign is a sophisticated supply chain attack that:
 
 - **Targets**: GitHub tokens, AWS/GCP/Azure credentials, npm tokens
-- **Propagates**: Via stolen npm tokens to publish infected versions
-- **Backdoors**: Creates GitHub Actions workflows for remote execution
+- **Propagates**: Via stolen npm tokens to publish infected package versions
+- **Backdoors**: Creates GitHub Actions workflows for remote code execution
 - **Destroys**: Can wipe home directories using `shred` (Linux) or `cipher /W` (Windows)
 
 The attack uses Bun runtime for stealth execution and self-replicates through the npm supply chain.
 
 ---
 
-*Report generated by Shai-Hulud Scanner v1.0*
+*Report template - Shai-Hulud Scanner v1.0*
