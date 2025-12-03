@@ -47,9 +47,19 @@ worm-buster [options] [directory1] [directory2] ...
 
 Pass one or more directory paths to scan. If no directories are specified, scans the current directory.
 
+### Run Directly (no install)
+
+```bash
+# From the worm-buster directory
+node index.js ~/code
+node index.js /path/to/project
+node index.js --full .
+```
+
 ### Command Line
 
 ```bash
+# After npm link or global install
 # Scan current directory (generates JSON, Markdown, and HTML reports)
 worm-buster
 worm-buster .
