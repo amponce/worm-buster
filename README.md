@@ -41,6 +41,12 @@ npm link  # Makes 'worm-buster' command available globally
 
 ## Usage
 
+```
+worm-buster [options] [directory1] [directory2] ...
+```
+
+Pass one or more directory paths to scan. If no directories are specified, scans the current directory.
+
 ### Command Line
 
 ```bash
@@ -71,6 +77,7 @@ worm-buster --json /path/to/project
 
 | Option | Description |
 |--------|-------------|
+| `[directories...]` | One or more directories to scan (default: current directory) |
 | `-h, --help` | Show help message |
 | `-v, --verbose` | Show verbose output including parse errors |
 | `--all` | Scan all common project directories |
