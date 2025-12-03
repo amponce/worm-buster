@@ -36,6 +36,7 @@ worm-buster --help
 git clone <repository-url>
 cd worm-buster
 npm install
+npm link  # Makes 'worm-buster' command available globally
 ```
 
 ## Usage
