@@ -1,0 +1,54 @@
+{
+  "name": "worm-buster",
+  "version": "1.0.0",
+  "description": "Security scanner for detecting the Shai-Hulud 2 npm supply chain attack",
+  "main": "index.js",
+  "bin": {
+    "worm-buster": "./index.js"
+  },
+  "scripts": {
+    "scan": "node index.js",
+    "scan:full": "node index.js --full",
+    "scan:all": "node index.js --all",
+    "test": "node --test test/*.test.js",
+    "test:watch": "node --test --watch test/*.test.js",
+    "test:coverage": "node --test --experimental-test-coverage test/*.test.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prepublishOnly": "npm test && npm run lint"
+  },
+  "keywords": [
+    "security",
+    "malware",
+    "scanner",
+    "npm",
+    "supply-chain",
+    "shai-hulud",
+    "detection",
+    "ioc",
+    "indicators-of-compromise"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "index.js",
+    "lib/",
+    "worm.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  }
+}

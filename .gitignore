@@ -28,10 +28,19 @@ jspm_packages/
 # Optional eslint cache
 .eslintcache
 
-# Output files (contain local paths)
-worm-buster-report.json
-scan-report.json
+# Scan reports and audit outputs (contain local paths/hostnames)
+worm-buster-report.*
+scan-report.*
+*-report.json
+*-report.md
+*-report.html
+reports/
 *.tmp
+
+# Old scanner files (deprecated)
+scan-shai-hulud.js
+worm-buster.js
+SCAN-REPORT.md
 
 # OS files
 .DS_Store

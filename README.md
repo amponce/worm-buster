@@ -1,225 +1,226 @@
-# Worm Buster - Shai-Hulud 2 Malware Scanner
+# Worm Buster
 
-## Overview
+Security scanner for detecting the **Shai-Hulud 2** npm supply chain attack (November 2025).
 
-Worm Buster is a security scanner designed to detect and remove the **Shai-Hulud 2** supply chain attack that infected numerous npm packages in November 2025. This malware campaign compromised over 1000 npm packages with malicious code designed to steal credentials and sensitive information.
+## Quick Start
 
-## Features
+```bash
+# Install dependencies
+npm install
 
-- 🔍 **Package Scanning**: Detects infected npm packages in your projects
-- 📦 **Dependency Analysis**: Checks package.json and package-lock.json files
-- 🚨 **Artifact Detection**: Identifies malicious files left by the malware
-- 🔐 **Credential Protection**: Alerts about potentially compromised credential files
-- 📊 **Comprehensive Reporting**: Generates detailed JSON reports of findings
+# Scan current directory (generates JSON, Markdown, and HTML reports)
+npm run scan
 
-## Files in This Repository
-
-- `scan-shai-hulud.js` - Main scanner script
-- `worm.md` - Database of infected packages (1000+ entries)
-- `SCAN-REPORT.md` - Human-readable scan report
-- `scan-report.json` - Detailed JSON report of scan findings
+# Full scan with process and credential checks
+npm run scan:full
+```
 
 ## Installation
 
-### Prerequisites
+### As a Project Dependency
 
-- Node.js (v14 or higher)
-- npm or yarn
-- Linux/macOS/Windows with WSL
-
-### Setup
-
-1. Clone or download this repository:
 ```bash
-git clone https://github.com/yourusername/worm-buster.git
-cd worm-buster
+npm install worm-buster
 ```
 
-2. Ensure the scanner script has execute permissions:
+### Global Installation
+
 ```bash
-chmod +x scan-shai-hulud.js
+npm install -g worm-buster
+worm-buster --help
+```
+
+### From Source
+
+```bash
+git clone <repository-url>
+cd worm-buster
+npm install
 ```
 
 ## Usage
 
-### Quick Scan (Default Directories)
-
-Run the scanner with default settings to scan common project directories:
+### Command Line
 
 ```bash
-node scan-shai-hulud.js
+# Scan current directory (generates JSON, Markdown, and HTML reports)
+worm-buster
+worm-buster .
+
+# Scan a specific directory
+worm-buster /path/to/project
+
+# Scan multiple directories
+worm-buster ~/code/app1 ~/code/app2 ~/code/app3
+
+# Scan all common project directories (~/{code,projects,dev,...})
+worm-buster --all
+
+# Full scan with process and credential checks
+worm-buster --full ~/projects
+
+# Output reports to a specific directory
+worm-buster . -o ./reports
+
+# JSON output only (for CI/CD pipelines)
+worm-buster --json /path/to/project
 ```
 
-By default, it scans:
-- `/home/[user]/code`
-- `/home/[user]`
-- `/home/[user]/workspaces`
+### Options
 
-### Custom Directory Scan
+| Option | Description |
+|--------|-------------|
+| `-h, --help` | Show help message |
+| `-v, --verbose` | Show verbose output including parse errors |
+| `--all` | Scan all common project directories |
+| `--processes` | Check for suspicious running processes |
+| `--credentials` | Check credential files that may have been compromised |
+| `--full` | Enable all checks (--processes + --credentials) |
+| `--json` | Output results in JSON format only (no reports) |
+| `-o, --output DIR` | Output directory for reports (default: current directory) |
 
-To scan specific directories, modify the `directories` array at the bottom of `scan-shai-hulud.js`:
+### Programmatic Usage
 
 ```javascript
-const directories = [
-  '/path/to/your/project',
-  '/another/project/path'
-];
+const { scan, loadInfectedPackages, checkPackageJson } = require('worm-buster');
+
+// Full scan
+const findings = await scan({
+  directories: ['/path/to/project'],
+  verbose: true,
+  checkProcesses: true,
+});
+
+// Check specific package.json
+const infectedPackages = loadInfectedPackages('./worm.md');
+const results = checkPackageJson('./package.json', infectedPackages);
 ```
 
-Then run:
+### npm Scripts
+
 ```bash
-node scan-shai-hulud.js
+npm run scan          # Basic scan (generates all report formats)
+npm run scan:full     # Full scan with all checks
+npm run scan:all      # Scan all common directories
+npm run test          # Run tests
+npm run lint          # Run ESLint
 ```
 
-### Single Project Scan
+## What It Detects
 
-For a quick single project scan:
-```bash
-cd /path/to/your/project
-node /path/to/worm-buster/scan-shai-hulud.js .
+### Infected Packages (Critical)
+Checks against 1000+ known infected npm packages from the Shai-Hulud 2 campaign. If your project has an exact infected version, this is flagged as CRITICAL.
+
+### Targeted Packages (Caution)
+If you have a package that was targeted in the attack but you have a SAFE version, the tool shows a CAUTION notice. This warns you not to upgrade to the infected versions.
+
+### Malicious Artifacts (IoCs)
+- `.github/workflows/discussion.yaml` - Backdoor workflow
+- `setup_bun.js`, `bun_environment.js` - Malware payload files
+- `cloud.json`, `environment.json`, `truffleSecrets.json` - Exfiltrated data
+- `formatter_*.yml` workflows - Suspicious automated workflows
+
+### Suspicious Scripts
+Detects potentially malicious npm lifecycle scripts (`preinstall`, `postinstall`) containing:
+- `bun`, `setup_`, `curl`, `wget`, `eval` patterns
+
+### System Checks (with `--full`)
+- Running processes matching malware patterns
+- Credential files that may have been exfiltrated
+
+## Report Formats
+
+All three report formats are generated by default in the current directory (or use `-o` to specify output directory).
+
+### JSON (`worm-buster-report.json`)
+Machine-readable format for automation and CI/CD integration.
+
+### Markdown (`worm-buster-report.md`)
+Human-readable report suitable for documentation and tickets.
+
+### HTML (`worm-buster-report.html`)
+Styled report for sharing with IT/security teams via browser.
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | No critical issues found |
+| 1 | Critical issues detected |
+| 2 | Fatal error occurred |
+
+## Project Structure
+
+```
+worm-buster/
+├── index.js           # Main entry point and CLI
+├── lib/
+│   ├── config.js      # IOC definitions and constants
+│   ├── loader.js      # Infected packages database loader
+│   ├── scanner.js     # File system scanning
+│   ├── analyzer.js    # Package analysis
+│   ├── system.js      # Process and credential checks
+│   ├── output.js      # Console output formatting
+│   └── reporter.js    # Report generation (JSON/MD/HTML)
+├── test/              # Unit tests
+├── worm.md            # Infected packages database
+└── package.json
 ```
 
-## What the Scanner Detects
+## Response Actions
 
-### 1. Infected Packages
-The scanner checks for over 1000 known infected npm packages listed in `worm.md`, including:
-- Direct dependencies in `package.json`
-- Locked versions in `package-lock.json`
-- Actually installed packages in `node_modules`
-
-### 2. Malicious Artifacts
-Known malicious files created by the malware:
-- `.github/workflows/discussion.yaml`
-- `cloud.json`
-- `environment.json`
-- `truffleSecrets.json`
-- `actionsSecrets.json`
-- `setup_bun.js`
-- `bun_environment.js`
-- Suspicious workflow files matching pattern `formatter_*.yml`
-
-### 3. Suspicious Scripts
-Detects potentially malicious npm scripts:
-- `preinstall`, `postinstall`, `prepare` scripts
-- Scripts containing suspicious commands (curl, wget, eval, bun)
-
-### 4. Running Processes
-Checks for suspicious Bun runtime processes that might be active
-
-### 5. Credential Files
-Identifies credential files that may have been targeted:
-- `.aws/credentials`
-- `.azure/credentials`
-- `.config/gcloud/credentials.db`
-- `.npmrc`
-- `.netrc`
-- `.git-credentials`
-
-## Understanding the Results
-
-### Severity Levels
-
-- **🚨 CRITICAL**: Infected packages or malicious artifacts found - immediate action required
-- **⚠️ WARNING**: Suspicious packages or scripts detected - review recommended
-- **ℹ️ INFO**: Informational findings - no immediate action required
-
-### Report Files
-
-After scanning, two report files are generated:
-
-1. **scan-report.json**: Detailed JSON report with all findings
-2. **Console Output**: Human-readable summary with recommended actions
-
-## Recommended Actions if Infected
-
-If the scanner detects infections:
+If infected packages are found:
 
 1. **DO NOT** run `npm install` in affected projects
 2. Remove infected packages from `package.json`
 3. Delete `node_modules` and `package-lock.json`
-4. Check `.github/workflows` for unauthorized workflow files
-5. **Rotate ALL credentials immediately**:
-   - AWS access keys
-   - Azure credentials
-   - Google Cloud credentials
+4. Check `.github/workflows` for suspicious files
+5. **Rotate ALL credentials immediately:**
+   - AWS, Azure, GCP credentials
    - GitHub tokens
    - npm tokens
-   - Any API keys in environment variables
-6. Check for unauthorized GitHub Actions workflows in your repositories
-7. Review recent commits for unauthorized changes
-8. Check if Bun runtime was installed: `which bun`
-9. Remove Bun if found and not intentionally installed
+6. Review GitHub Actions for unauthorized workflows
+7. Check for unauthorized Bun installation: `which bun`
 
-## Cleaning Infected Systems
+## CI/CD Integration
 
-### Step 1: Remove Infected Packages
-```bash
-# Remove node_modules and lock file
-rm -rf node_modules package-lock.json
+### GitHub Actions
 
-# Edit package.json to remove infected packages
-# Then reinstall clean versions
-npm install
+```yaml
+- name: Scan for Shai-Hulud 2
+  run: |
+    npx worm-buster --json . > scan-results.json
+    if [ $? -eq 1 ]; then
+      echo "::error::Infected packages detected!"
+      exit 1
+    fi
 ```
 
-### Step 2: Remove Malicious Artifacts
-```bash
-# Remove known malicious files
-rm -f .github/workflows/discussion.yaml
-rm -f cloud.json environment.json truffleSecrets.json
-rm -f actionsSecrets.json setup_bun.js bun_environment.js
+### Pre-commit Hook
 
-# Check for suspicious workflow files
-ls -la .github/workflows/formatter_*.yml
+```bash
+#!/bin/sh
+npx worm-buster --json . > /dev/null
+if [ $? -eq 1 ]; then
+  echo "Error: Infected packages detected. Run 'npx worm-buster' for details."
+  exit 1
+fi
 ```
 
-### Step 3: Clean Bun Installation (if present)
-```bash
-# Check if Bun is installed
-which bun
+## Testing
 
-# If found and not intentionally installed:
-npm uninstall -g bun
-rm -rf ~/.bun
+```bash
+npm test                    # Run all tests
+npm run test:watch          # Watch mode
+npm run test:coverage       # With coverage
 ```
 
-## Prevention Tips
+## References
 
-1. **Use npm audit regularly**: `npm audit`
-2. **Enable 2FA** on npm and GitHub accounts
-3. **Review dependencies** before installing
-4. **Use lock files** and commit them to version control
-5. **Monitor GitHub Actions** for unauthorized workflows
-6. **Use tools like Snyk** or **Socket.dev** for continuous monitoring
-
-## Contributing
-
-If you discover new infected packages or malicious indicators not in our database, please:
-
-1. Create an issue with package details
-2. Submit a pull request updating `worm.md`
-3. Include version information and IoCs (Indicators of Compromise)
+- [Wiz Security - Shai-Hulud 2.0 Analysis](https://www.wiz.io/blog/shai-hulud-2-0-ongoing-supply-chain-attack)
+- [Datadog Security Labs - npm Worm Analysis](https://securitylabs.datadoghq.com/articles/shai-hulud-2.0-npm-worm/)
+- [Check Point Research - Technical Deep Dive](https://blog.checkpoint.com/research/shai-hulud-2-0-inside-the-second-coming)
 
 ## License
 
-MIT License - See LICENSE file for details
-
-## Disclaimer
-
-This tool is provided as-is for security scanning purposes. Always verify findings and take appropriate security measures. The authors are not responsible for any damages arising from the use of this tool.
-
-## Resources
-
-- [npm Security Advisories](https://www.npmjs.com/advisories)
-- [GitHub Security Advisories](https://github.com/advisories)
-- [MITRE ATT&CK Framework](https://attack.mitre.org/)
-
-## Support
-
-For issues or questions:
-- Open an issue on GitHub
-- Check existing issues for solutions
-- Review the malware analysis in SCAN-REPORT.md
-
----
-**Stay Safe!** 🛡️ Remember to always keep your dependencies updated and credentials secure.
+MIT
